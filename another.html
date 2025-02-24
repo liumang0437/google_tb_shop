@@ -12,7 +12,7 @@
         /* 亮色主题 */
         --primary-color: #E9014F; /* 新的主色调 */
         --primary-light: #FDE6ED; /* 调整为配套的浅色 */
-        --bg-color: #f3f7fd;
+        --bg-color: #ffffff;
         --card-bg: #ffffff;
         --text-primary: #2c2c2c;
         --text-secondary: #666666;
@@ -557,15 +557,40 @@
       }
 
       .product-contact {
-        color: var(--text-secondary);
-        font-size: 0.875rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
+        margin-top: 1rem;
       }
 
       .product-contact-label {
         color: var(--text-primary);
+        font-size: 0.875rem;
+        margin-bottom: 0.5rem;
+        display: block;
+      }
+
+      .contact-links {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .contact-link {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-size: 0.875rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.2s ease;
+      }
+
+      .contact-link:hover {
+        color: var(--primary-color);
+        opacity: 0.8;
+        text-decoration: underline;
+      }
+
+      .contact-link i {
+        font-size: 0.75rem;
       }
 
       /* 调整关闭按钮的样式以保持一致性 */
@@ -828,7 +853,10 @@
       function showProductDetails(item) {
         const modal = document.getElementById('productModal');
         const modalBody = document.getElementById('modalBody');
-
+        
+        // 解析联系方式数组
+        const contactArr = JSON.parse(item.contact);
+        
         modalBody.innerHTML = `
           <div class="product-image-wrapper">
             <img src="${item.image}" class="product-image" alt="${item.name}">
@@ -851,7 +879,14 @@
             </div>
             <div class="product-contact">
               <span class="product-contact-label">联系方式:</span>
-              <span>${item.contact}</span>
+              <div class="contact-links">
+                ${contactArr.map(contact => `
+                  <a href="${contact.val}" class="contact-link" target="_blank">
+                    <i class="fas fa-external-link-alt"></i>
+                    ${contact.key}
+                  </a>
+                `).join('')}
+              </div>
             </div>
           </div>
         `;
